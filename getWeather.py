@@ -75,7 +75,7 @@ def get_city_dict():
 
 
 # 获取天气情况
-def get_wea_fin(lng=23.2859, lat=116.7266, date='20170701'):
+def get_wea_fin(lng=23.152, lat=113.346, date='20141207'):
     """根据经纬度获取天气情况
         :param lng: num, 纬度
         :param lat: num, 经度
@@ -95,13 +95,28 @@ def get_wea_fin(lng=23.2859, lat=116.7266, date='20170701'):
     elif district == '' and city != '':  # 不存在区县信息，取城市信息
         weather = get_weather(city_dict[city], str(date))
     else:
-        print '对不起，无法查到您给的经纬度信息，请输入中国大陆范围内经纬度信息。'
+        print '对不起，无法查到您给的经纬度信息，请输入中国大陆范围内经纬度信息。'.decode('utf-8').encode('GB2312')
     return str(date), address, weather
 
 
 city_dict = get_city_dict()
 citys = city_dict.keys()
-weather = get_wea_fin(31.1219830, 121.3743330, '20141207')
-print weather[0], weather[1]['province'], weather[1]['city'], weather[1]['district'], weather[1]['street']
-for k,v in weather[2].items():
-    print k, v
+
+if __name__ == '__main__':
+    lng_lat = raw_input('请输入经纬度信息，如23.152 113.346:'.decode('utf-8').encode('GB2312'))
+    date = raw_input('请输入查询日期，如20141207:'.decode('utf-8').encode('GB2312'))
+    if lng_lat and date:
+        lng = lng_lat.split()[0]
+        lat = lng_lat.split()[1]
+        weather = get_wea_fin(lng, lat, date)
+    else:
+        weather = get_wea_fin()
+    print '日期：'.decode('utf-8').encode('GB2312'), weather[0]
+    print '地址信息: '.decode('utf-8').encode('GB2312'), weather[1]['province'], weather[1]['city'], weather[1]['district'], weather[1]['street']
+    print '天气情况: '.decode('utf-8').encode('GB2312')
+    print '白天天气: '.decode('utf-8').encode('GB2312'), weather[2]['day']
+    print '夜间天气: '.decode('utf-8').encode('GB2312'), weather[2]['night']
+    print '最高气温: '.decode('utf-8').encode('GB2312'), weather[2]['temp_high']
+    print '最低气温: '.decode('utf-8').encode('GB2312'), weather[2]['temp_low']
+    print '风速风向: '.decode('utf-8').encode('GB2312'), weather[2]['wind']
+    raw_input('press any key to exit:')
