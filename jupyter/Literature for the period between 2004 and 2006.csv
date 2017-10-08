@@ -1,0 +1,130 @@
+,Area,Inputs,Methodology_Approach,Model,Prediction_Horizon_steps,Prediction_Step_min,Problem,Traffic_Parameter,author,data_collection,date
+23,Motorway(U),Multiple,Univariate,Hybrid,4,5,FA,Speed,Alecsandru and Ishak,Detectors,2004
+25,Motorway(U),Multiple,Univariate,Hybrid,4,5,TS,Speed,Ishak and Alecsandru,Detectors,2004
+27,Motorway,Single,Univariate,Statistical,1,5,PR,Speed,Rice and van Zwet,Detectors,2004
+29,Motorway,Single,Univariate,Statistical,10,5,TS,Speed,Yang et al.,Detectors,2004
+26,Arterial,Multiple,Univariate,Bayesian,1,1,FA,Travel_Time,Lin et al.,Simulation,2004
+28,Motorway,Multiple,Univariate,Statistical,1,3,FA,Travel_Time,Wu et al.,Detectors,2004
+24,Arterial,Single,Univariate,Statistical/C,60,1,PR,Volume,Chrobok et al.,Detectors,2004
+30,Motorway,Multiple,Univariate,NN,60,60,FA,Volume,Zhong et al.,Detectors,2004
+18,Motorway,Multiple,Univariate,Statistical,1,2,TS,Speed,Shang et al.,Detectors,2005
+15,Arterial,Single,Univariate,Statistical,1,7.5,TS,State,Kamarianakis et al.,Detectors,2005
+13,Motorway,Multiple,Univariate,NN,1,1,FA,Travel_Time,Innamaa,Detectors,2005
+16,Motorway(U),Single,Univariate,Statistical,1,15,FA,Travel_Time,Kwon and Petty,Detectors,2005
+17,Motorway,Single,Univariate,NN,1,1,TS,Travel_Time,Oh et al.,Detectors,2005
+19,Motorway,Multiple,Univariate,NN,1,1,FA,Travel_Time,van Lint and van Zulen,Detectors,2005
+20,Motorway,Multiple,Univariate,NN,1,1,TS,Travel_Time,van Lint et al.,Detectors,2005
+14,Motorway(U),Multiple,Univariate,Hybrid,1,60,TS,Volume,Jiang and Adeli,Detectors,2005
+21,Arterial,Multiple,Multivariate,NN,5,3,FA,Volume,Vlahogianni et al.,Detectors,2005
+22,Motorway,Multiple,Univariate,NN,60,60,FA,Volume,Zhong et al.,Detectors,2005
+5,Motorway,Multiple,Univariate,NN,60,1,FA,Density,Quek et al.,Detectors,2006
+0,Motorway,Single,Univariate,Statistical,1,1,TS,Speed,Cetin and Comert,Detectors,2006
+1,Motorway,Single,Univariate,Statistical,2,1,FA,Travel_Time,Dion and Rakha,AVI,2006
+2,Motorway,Multiple,Univariate,NN,1,1,FA,Travel_Time,Innamaa,Detectors,2006
+9,Motorway,Multiple,Univariate,NN,1,1,TS,Travel_Time,van Lint,Detectors,2006
+3,Motorway,Single,Univariate,Statistical,day,day,FA,Volume,Lam et al.,Detectors,2006
+4,Arterial,Single,Univariate,Statistical,1,1,FA,Volume,Liu et al.,Simulation,2006
+8,Motorway,Single,Univariate,Statistical,1,15,PR,Volume,Turochy,Detectors,2006
+11,Motorway(U),Multiple,Univariate,Hybrid,1,5,PR,Volume,Xie and Zhang,Detectors,2006
+12,Motorway(U),Multiple,Univariate,Hybrid/C,1,15,FA,Volume,Zheng et al.,Detectors,2006
+59,Arterial,Multiple,Univariate,NN,1,1.5,FA,State,Vlahogianni,Detectors,2007
+57,Motorway,Single,Univariate,Statistical,1,1,TS,Travel_Time,Juri et al.,Simulation,2007
+55,Arterial,Single,Univariate,Bayesian,1,15,TS,Volume,Ghosh et al.,Detectors,2007
+58,Network,Multiple,Univariate,Statistical,1,15,FA,Volume,Sun and Zhang,Detectors,2007
+60,Arterial,Multiple,Multivariate,Hybrid,1,1.5,TS,Volume,Vlahogianni et al.,Detectors,2007
+61,Motorway(U),Multiple,Univariate,Statistical,1,5,FA,Volume,Xie et al.,Detectors,2007
+62,Motorway,Single,Univariate,Statistical,1,15,FA,Volume,Zhang and Xie,Detectors,2007
+47,Motorway,Multiple,Multivariate,Statistical,1,5,TS,Speed,Chandra and Al-Deek,Detectors,2008
+53,Arterial,Multiple,Multivariate,NN,1,1.5,FA,State,Vlahogianni,Detectors,2008
+50,Motorway,Multiple,Univariate,Bayesian,1,5,FA,Travel_Time,Li,Detectors/AVI,2008
+52,Motorway,Multiple,Univariate,Hybrid,1,1,TS,Travel_Time,van Lint,Detectors,2008
+6,Motorway,Multiple,Univariate,Statistical,1,15,TS,Volume,Shekhar and Williams,Detectors,2008
+48,Arterial,Multiple,Univariate,Fuzzy/C,1,1.5,FA,Volume,Dimitriou et al.,Detectors,2008
+49,Motorway(U),Single,Univariate,Statistical,1,1,TS,Volume,Guo et al.,Detectors,2008
+51,Arterial,Multiple,Univariate,Fuzzy/C,1,3,FA,Volume,Stathopoulos et al.,Detectors,2008
+54,Motorway,Single,Univariate,Hybrid,1,15,FA,Volume,Zhang and Ye,Detectors,2008
+94,Arterial,Single,Univariate,Statistical,2,5,TS,Volume,Thomas et al.,Detectors,2008
+32,Motorway,Multiple,Multivariate,Statistical,1,5,TS,Speed,Chandra and Al-Deek,Detectors,2009
+34,Motorway,Multiple,Univariate,NN,5,5,FA,Speed,Hamad et al.,Detectors,2009
+36,Motorway,Multiple,Multivariate,NN,4,5,PR,Travel_Time,Innamaa,Detectors,2009
+37,Motorway,Single,Univariate,Bayesian,1,5,FA,Travel_Time,Jintanakul et al.,Simulation,2009
+43,Motorway,Multiple,Univariate,NN,3,5,TS,Travel_Time,van Hinsbergen et al.,Detectors,2009
+46,Motorway,Multiple,Univariate,NN,1,5,FA,Travel_Time,Zou et al.,Detectors,2009
+56,Motorway,Multiple,Univariate,NN,1,1,FA,Travel_Time,Innamaa,Detectors,2009
+31,Motorway(U),Single,Univariate,Statistical,1,5,FA,Volume,Castro-Neto et al.,Detectors,2009
+33,Arterial,Multiple,Multivariate,Statistical,50,15,TS,Volume,Ghosh et al.,Detectors,2009
+35,Arterial,Single,Univariate,NN,1,5,PR,Volume,Huang and Sadek,Detectors,2009
+39,Motorway,Multiple,Multivariate,NN,1,1,TS,Volume,Sheu et al.,Detectors,2009
+40,Arterial,Multiple,Univariate,NN,1,15,FA,Volume,Srinivasan et al.,Detectors,2009
+41,Arterial,Single,Univariate,Statistical,1,15,TS,Volume,Szeto et al.,Detectors,2009
+42,Motorway,Multiple,Univariate,Hybrid/C,3,60,FA,Volume,Tan et al.,Detectors,2009
+44,Arterial,Multiple,Univariate,NN,1,1.5,TS,Volume,Vlahogianni,Detectors,2009
+38,Arterial,Single,Univariate,Statistical,1,1.5,TS,Volume/Occupancy,Karlaftis and Vlahogianni,Detectors,2009
+73,Motorway,Single,Univariate,Statistical,1,0.5,FA,Speed,Ishak et al.,Detectors,2010
+89,Motorway(U),Single,Univariate,Hybrid,1,5,TS,Speed,Guo and Williams,Detectors,2010
+97,Motorway,Single,Univariate,Statistical,1,15,TS,Travel_Time,Yang et al.,AVI,2010
+7,Arterial,Single,Univariate,Statistical,1,3,TS,Volume,Tsekeris and Stathopoulos,Detectors,2010
+87,Motorway,Multiple,Multivariate,Hybrid,2,5,PR,Volume,Boto-Giralda et al.,Detectors,2010
+88,Arterial,Single,Univariate,Hubrid,1,5,TS,Volume,Ghosh et al.,Detectors,2010
+91,Motorway,Multiple,Univariate,Hybrid,1,15,FA,Volume,McCrea and Moutari,Detectors,2010
+92,Arterial,Multiple,Univariate,Fuzzy/C,1,3,FA,Volume,Stathopoulos et al.,Detectors,2010
+93,Arterial,Single,Univariate,Hybrid/C,1,3,FA,volume,Stathopoulos et al.,Detectors,2010
+95,Arterial,Multiple,Multivariate,Statistical,1,3,TS,Volume,Tsekeris and Stathopoulos,Detectors,2010
+96,Motorway(U),Single,Univariate,Statistical,2,15,FA,Volume,Xie and Zhao,Detectors,2010
+98,Motorway,Single,Univariate,NN,1,5,FA,Volume,Zargari et al.,Detectors,2010
+90,Arterial,Single,Univariate,Statistical,1,1.5,TS,Volume/Speed/Occupancy,Kamarianakis et al.,Detectors,2010
+67,Motorway,Multiple,Univariate,Statistical,6,5,FA,Speed,Djuric et al.,Detectors,2011
+69,Motorway(U),Single,Univariate,Statistical,8,15,FA,Speed,Heilmann et al.,ETC.,2011
+83,Motorway,Single,Univariate,Hybrid,1,5,PR,Speed,Wang et al.,Detectors,2011
+63,Arterial,Multiple,Multivariate,Hybrid,1,5,FA,Travel_Time,Abu-Lebdeh and Singh,Simulation,2011
+64,Motorway,Single,Univariate,Statistical,1,15,PR,Travel_Time,Bustillos and Chiu,Simulation,2011
+68,Motorway(U),Single,Univariate,Bayesian,1,1,TS,Travel_Time,Fei et al.,Detectors,2011
+74,Motorway(U),Multiple,Univariate,Hybrid,1,5,FA,Travel_Time,Khosravi et al.,Detectors,2011
+76,Motorway,Multiple,Univariate,NN,6,10,FA,Travel_Time,Li and Rose,AVI,2011
+78,Motorway,Multiple,Univariate,Statistical,1,5,PR,Travel_Time,Myung et al.,Detectors/AVI,2011
+79,Motorway,Single,Univariate,NN,1,1,TS,Travel_Time,Oh and Park,AVI,2011
+80,Motorway,Single,Univariate,Statistical,1,1,FA,Travel_Time,Simroth and Zähle,GPS,2011
+81,Motorway(U),Single,Univariate,Statistical/C,1,5,FA,Travel_Time,Soriguera and Robusté,Detectors/AVI,2011
+84,Motorway,Multiple,Multivariate,Statistical,1,15,TS,Travel_Time,Xia et al.,Detectors,2011
+65,Arterial,Multiple,Univariate,Statistical,1,5,TS,Volume,Chang et al.,Detectors,2011
+66,Arterial,Single,Univariate,Hybrid,1,0.1,PR,Volume,Chen et al.,Detectors,2011
+70,Arterial,Single,Univariate,Hybrid,1,60,TS,Volume,Hong,Detectors,2011
+75,Motorway,Single,Univariate,Statistical,1,1,TS,Volume,Kuhn and Nicholson,Detectors,2011
+86,Arterial,Single,Univariate,Statistical,1,15,FA,Volume,Sun and Xu,Detectors,2011
+82,Arterial,Single,Univariate,Statistical,1,1.5,TS,Volume/Occupancy,Vlahogianni and Karlaftis,Detectors,2011
+77,Motorway(U),Multiple,Multivariate,Statistical,12,5,TS,Volume/Speed,Min and Wynter,Detectors,2011
+100,Motorway(U),Single,Univariate,NN,1,5,FA,Speed,Wang and Shi,Detectors,2012
+116,Motorway(U),Multiple,Univariate,Statistical,5,5,TS,Speed,Kamarianakis et al.,Detectors,2012
+124,Motorway(U),Multiple,multivariate,Statistical,1,10,TS,Speed,Tsirigotis et al.,Detectors,2012
+127,Motorway(U),Multiple,Univariate,NN,60,0.01,FA,Speed,Ye et al.,GPS,2012
+126,Motorway,Multiple,Multivariate,Statistical,1,5,CL,State,Xia et al.,Detectors,2012
+45,Motorway,Multiple,Univariate,Bayesian,1,1,FA,Travel_Time,Wang and Shi,Detectors,2012
+101,Motorway,Single,Univariate,Statistical,1,1,FA,Travel_Time,Mu et al.,Simulation,2012
+111,Network,Multiple,Univariate,Statistical,1,2,O,Travel_Time,Du et al.,Simulation,2012
+114,Network,Multiple,Univariate,Statistical/C,1,5,FA,Travel_Time,Haworth and Cheng,AVI,2012
+117,Motorway,Single,Univariate,Bayesian,1,5,FA,Travel_Time,Khan,GPS,2012
+119,Motorway,Single,Univariate,Bayesian,1,5,FA,Travel_Time,Lu,Detectors,2012
+120,Motorway,Single,Univariate,Statistical,1,1,PR,Travel_Time,Ma et al.,Simulation,2012
+121,Motorway,Single,Univariate,Statistical,1,5,PR,Travel_Time,Qiao et al.,Bluetooth,2012
+128,Arterial,Multiple,Univariate,NN,1,1,FA,Travel_Time,Zheng and Van Zuylen,GPS,2012
+105,Motorway,Multiple,Univariate,Hybrid,1,1,TS,Volume,Abdi et al.,Detectors,2012
+109,Motorway(U),Single,Univariate,Statistical,1,3,FA,Volume,Chen et al.,Detectors,2012
+110,Arterial,Multiple,Univariate,Statistical,1,5,TS,Volume,Cheng et al.,Detectors,2012
+113,Motorway,Single,Univariate,Statistical,1,15,TS,Volume,Guo et al.,Detectors,2012
+115,Arterial,Single,Univariate,Statistical,1,60,FA,Volume,Hong,Detectors,2012
+122,Network,Multiple,Multivariate,NN,1,15,PR,Volume,Sun et al.,Detectors,2012
+123,Motorway,Multiple,Univariate,Statistical,5,15,TS,Volume,Tchrakian et al.,Detectors,2012
+125,Arterial,Single,Univariate,Statistical,1,5,FA,Volume,Tsirigotis et al.,Detectors,2012
+112,Motorway,Multiple,Multivariate,NN,1,1,FA,Volume/Speed,Dunne and Ghosh,Detectors,2012
+99,Motorway(U),Multiple,Univariate,Hybrid,1,2,FA,Density,Celikoglu,Detectors,2013
+102,Motorway(U),Multiple,Univariate,Hybrid,5,1,FA,Speed,Chan et al.,Detectors,2013
+104,Motorway(U),Multiple,Multivariate,Hybrid,1,1,TS,Speed,Vlahogianni and Karlaftis,Detectors,2013
+118,Motorway,Multiple,Univariate,NN,1,5,FA,Travel_Time,Li and Chen,Detectors/AVI,2013
+103,Arterial,Single,Univariate,Statistical,1,15,TS,Volume,Guo et al.,Detectors,2013
+10,Motorway(U),Multiple,Univariate,Statistical,20,1,FA,Travel_Time,Wang et al.,Simulation,2006a
+71,Arterial,Single,Univariate,Hybrid,1,60,FA,Volume,Hong et al.,Detectors,2011a
+85,Motorway,Single,Univariate,Statistical,1,5,FA,Volume,Zhang et al.,Detectors,2011a
+72,Arterial,Single,Univariate,Hybrid,1,60,FA,Volume,Hong et al.,Detectors,2011b
+106,Motorway(U),Multiple,Univariate,Statistical,1,1,FA,Speed,Chan et al.,Detectors,2012a
+108,Motorway,Multiple,Univariate,Hybrid,4,15,PR,Volume,Chang et al.,Detectors,2012a
+107,Motorway(U),Multiple,Univariate,NN,1,1,FA,Speed,Chan et al.,Detectors,2012b
