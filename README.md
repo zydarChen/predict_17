@@ -1,6 +1,6 @@
 # traffic prediction
 
-## [LSTM-Neural-Network-for-Time-Series-Prediction](./LSTM-Neural-Network-for-Time-Series-Prediction)
+## [LSTM-Neural-Network-for-Time-Series-Prediction](./LSTM-for-Time-Series)
 使用LSTM进行时间序列预测的Demo
 
 - 简单的预测sin函数以及股票走势
