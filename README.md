@@ -12,3 +12,10 @@
 
 ### [sample_demo](./PeMS/sample_demo)
  - [GitHub Project](https://github.com/corenel/traffic-prediction)
+
+## [ali](./ali)
+天池比赛：[“数聚华夏 创享未来”中国数据创新行——智慧交通预测挑战赛](https://tianchi.aliyun.com/competition/introduction.htm?spm=5176.100150.711.3.1289225e1iuc3S&raceId=231598)
+
+### [muti_model](./ali/muti_model)
+ - [[GitHub Project]](https://github.com/sanshanxiashi/tianchi_jiaotong)
+ - 多种模型进行融合
