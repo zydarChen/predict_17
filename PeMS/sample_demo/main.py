@@ -126,7 +126,6 @@ if __name__ == '__main__':
     plt.legend()
     plt.show()
 
-
     print('-- Saving results --')
     # now = datetime.now().strftime('%Y%m%d-%H%M%S')
     # pd.DataFrame(y_pred).to_csv('predict/y_pred_' + now + '.csv')
