@@ -168,10 +168,11 @@ mape_result = mape_ln1(predict , test_label)
 print( mape_result)
 
 
-'''''
+'''
 原始数据跑：
      ('mape', -0.319280434726493)
      
 剔除异常值：
     ('mape', -0.2732387686554558)
+'''
 

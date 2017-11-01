@@ -19,13 +19,16 @@ soure_path = os.getcwd()
 data_path = os.path.dirname(soure_path)
 warnings.filterwarnings("ignore")
 
+
 def mape(true,pred):
     result = np.sum(np.abs(pred-true)/true)/len(true)
     return result
 
+
 def mode_function(df):
     counts = mode(df)
     return counts[0][0]
+
 
 def test():
     ori_feature_data = pd.read_csv(data_path + '/data' + '/quaterfinal_all_link_ori_data_0-24_replace_missval.csv',
@@ -54,36 +57,38 @@ def test():
                                       (feature_data.time_interval_begin_hour == 16) |
                                       (feature_data.time_interval_begin_hour == 17) |
                                       (feature_data.time_interval_begin_hour == 18)), :]
-    all = pd.merge(ori_test_data,test_data,on=['link_ID','time_interval_day',
-                                               'time_interval_begin_hour','time_interval_minutes'],how='left')
+    all = pd.merge(ori_test_data, test_data, on=['link_ID', 'time_interval_day',
+                                                 'time_interval_begin_hour', 'time_interval_minutes'], how='left')
     print(all[all.isnull().T.any().T])
     
 
 def load_data(seq_len):
-    ori_feature_data = pd.read_csv(data_path+'/data'+'/all_data_M34567.csv',dtype = {"link_ID":str})
-    #feature_data = pd.read_csv(data_path+'/data'+'/feature_data_2017_4567_replaceForHigherPoint.csv',dtype = {"link_ID":str})
+    ori_feature_data = pd.read_csv(data_path+'/data'+'/all_data_M34567.csv', dtype={"link_ID": str})
+    # feature_data = pd.read_csv(data_path+'/data'+'/feature_data_2017_4567_replaceForHigherPoint.csv', dtype={"link_ID":str})
     
-    #feature_data = pd.read_csv(data_path+'/data'+'/quaterfinal_all_link_ori_data_0-24_replace_missval.csv',dtype = {"link_ID":str})
+    # feature_data = pd.read_csv(data_path+'/data'+'/quaterfinal_all_link_ori_data_0-24_replace_missval.csv',dtype = {"link_ID":str})
     feature_data = ori_feature_data
-    #load train_data
-    train_data = feature_data.loc[(feature_data.time_interval_month == 4)&
+    # load train_data
+    # 四月份数据
+    train_data = feature_data.loc[(feature_data.time_interval_month == 4) &
                                   (feature_data.time_interval_day < 31) &
-                                 (
-                                  (feature_data.time_interval_begin_hour == 7)|
-                                  (feature_data.time_interval_begin_hour == 8)|
-                                  (feature_data.time_interval_begin_hour == 14)|
-                                  (feature_data.time_interval_begin_hour == 15)|
-                                  (feature_data.time_interval_begin_hour == 17)|
-                                  (feature_data.time_interval_begin_hour == 18)),:]
+                                  (
+                                      (feature_data.time_interval_begin_hour == 7) |
+                                      (feature_data.time_interval_begin_hour == 8) |
+                                      (feature_data.time_interval_begin_hour == 14) |
+                                      (feature_data.time_interval_begin_hour == 15) |
+                                      (feature_data.time_interval_begin_hour == 17) |
+                                      (feature_data.time_interval_begin_hour == 18)
+                                  ), :]
+
     train_history = feature_data.loc[(feature_data.time_interval_month == 3), :]
-    train_history = train_history.groupby(['link_ID', 'time_interval_minutes'])[
-        'travel_time'].agg([ ('median_m', np.median),
-                            ('mode_m', mode_function),('std_m',np.std)]).reset_index()
+    train_history = train_history.groupby(['link_ID', 'time_interval_minutes'])['travel_time'].agg(
+        [('median_m', np.median), ('mode_m', mode_function), ('std_m', np.std)]).reset_index()
+
     train_data = pd.merge(train_data, train_history, on=['link_ID', 'time_interval_minutes'], how='left')
 
-    train_data = train_data.loc[:,['mean_m','median_m','mode_m','std_m','travel_time']].values
-
-    #load test_data
+    train_data = train_data.loc[:, ['mean_m', 'median_m', 'mode_m', 'std_m', 'travel_time']].values
+    # load test_data
     test_data_df5 = feature_data.loc[(feature_data.time_interval_month == 5)&
                                           (feature_data.time_interval_day >=15)&
                                  (
@@ -283,8 +288,9 @@ def load_data(seq_len):
     # x_test7 = np.reshape(x_test7, (x_test7.shape[0], 1, x_test7.shape[1]))
     # y_test6 = np.reshape(y_test6, (y_test6.shape[0], 1, y_test6.shape[1]))
     #return [x_train, y_train, x_test5, y_test5, x_test6, y_test6, x_test7, y_test7, test_label5, test_label6, test_label7]
-    return [train_result, test_result5 ,test_result6, test_result7,  test_label5, test_label6, test_label7]
-    
+    return [train_result, test_result5, test_result6, test_result7, test_label5, test_label6, test_label7]
+
+
 def normalise_windows(window_data):
     normalised_data = []
     for window in window_data:   #window shape (sequence_length L ,)  即(51L,)
@@ -295,7 +301,7 @@ def normalise_windows(window_data):
 def build_model(layers):  #layers [1,50,100,1]
     model = Sequential()
 
-    model.add(LSTM(input_dim=layers[0],output_dim=layers[1],return_sequences=True))
+    model.add(LSTM(input_dim=layers[0], output_dim=layers[1], return_sequences=True))
     model.add(Dropout(0.2))
 
     model.add(LSTM(layers[2],return_sequences=False))
@@ -375,12 +381,12 @@ from keras.utils.vis_utils import plot_model
 if __name__=='__main__':
     # test()
     global_start_time = time.time()
-    epochs  = 50
-    seq_len = 30         #####特征序列长度
+    epochs = 50
+    seq_len = 30  # 特征序列长度
 
     print('> Loading data... ')
 
-    train_result, test_result5 ,test_result6, test_result7 , test_label5, test_label6, test_label7= load_data(seq_len)
+    train_result, test_result5, test_result6, test_result7, test_label5, test_label6, test_label7 = load_data(seq_len)
     #X_train, y_train, X_test5, y_test5, X_test6, y_test6, X_test7, y_test7, test_label5, test_label6, test_label7 = load_data(seq_len)
     
     #X

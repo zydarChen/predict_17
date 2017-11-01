@@ -77,7 +77,8 @@ columns = [ 'link_ID', 'length', 'width', 'link_class', 'time_interval_begin', '
        'time_interval_month','time_interval_day', 'time_interval_begin_hour', 
        'time_interval_minutes', 'time_interval_week',
         'travel_time']
- feature_data_2017_3456_7.to_csv('./fusai_data/feature_data_2017_3456_7.csv', index=False, columns=columns)
+feature_data_2017_3456_7.to_csv('./fusai_data/feature_data_2017_3456_7.csv', index=False, columns=columns)
+
 
 
 
