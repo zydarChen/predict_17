@@ -32,7 +32,7 @@ if __name__ == '__main__':
     seq_len = 50
     print('> Loading data... ')
 
-    X_train, y_train, X_test, y_test = lstm.load_data('sp500.csv', seq_len, True)
+    X_train, y_train, X_test, y_test = lstm.load_data('../../Highways_England/data/test.csv', seq_len, True)
 
     print('> Data Loaded. Compiling...')
 
