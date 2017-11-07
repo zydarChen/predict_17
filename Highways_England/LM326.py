@@ -15,7 +15,7 @@ def load_data(file_path):
     t_min = length/v_max * 3.6
     t_max = df['travel_time'].max()
     # log ?
-    df['travel_time_normalise'] = df['travel_time'].map(lambda x: (x-t_min) / (t_max+t_min))
+    df['travel_time_normalise'] = df['travel_time'].map(lambda x: (x-t_min) / (t_max-t_min))
     return df[['travel_time_normalise']]
 
 
