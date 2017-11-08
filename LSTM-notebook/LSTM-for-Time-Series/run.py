@@ -28,11 +28,12 @@ def plot_results_multiple(predicted_data, true_data, prediction_len):
 # Main Run Thread
 if __name__ == '__main__':
     global_start_time = time.time()
-    epochs = 1
+    epochs = 20
     seq_len = 50
     print('> Loading data... ')
 
-    X_train, y_train, X_test, y_test = lstm.load_data('../../Highways_England/data/test.csv', seq_len, True)
+    # X_train, y_train, X_test, y_test = lstm.load_data('../../Highways_England/data/test.csv', seq_len, True)
+    X_train, y_train, X_test, y_test = lstm.load_data('sp500.csv', seq_len, True)
 
     print('> Data Loaded. Compiling...')
 
@@ -45,9 +46,9 @@ if __name__ == '__main__':
         nb_epoch=epochs,
         validation_split=0.05)
 
-    predicted = lstm.predict_point_by_point(model, X_test)
+    # predicted = lstm.predict_point_by_point(model, X_test)
     # predictions = lstm.predict_sequences_multiple(model, X_test, seq_len, 50)
-    # predicted = lstm.predict_sequence_full(model, X_test, seq_len)
+    predicted = lstm.predict_sequence_full(model, X_test, seq_len)
 
     print('Training duration (s) : ', time.time() - global_start_time)
     plot_results(predicted, y_test.astype(np.float32))

@@ -3,12 +3,13 @@
 from math import sqrt
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from Highways_England.LM326_utils import *
+from keras.utils import plot_model
 
 
 if __name__ == '__main__':
     global_start_time = time()
     epochs = 100
-    seq_len = 20
+    seq_len = 50
     features = 1
     hidden = 100
     output = 1
@@ -43,3 +44,5 @@ if __name__ == '__main__':
     plt.plot(history.history['val_loss'], label='valid')
     plt.legend()
     plt.show()
+    # plot model
+    plot_model(model, to_file='img/model.png', show_shapes=True)

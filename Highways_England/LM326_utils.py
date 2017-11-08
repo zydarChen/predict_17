@@ -16,6 +16,10 @@ def mre(y_true, y_pred):
     return K.mean(K.abs(y_pred - y_true)/y_true, axis=-1)
 
 
+def loss_paper(y_true, y_pred):
+    return K.mean(K.square(y_pred - y_true), axis=-1)/2
+
+
 def get_mre(y_true, y_pred):
     assert len(y_true) == len(y_pred)
     return np.mean(np.abs(y_true-y_pred)/y_true)
@@ -93,7 +97,7 @@ def build_model(timestep=50, features=1, hidden=100, output=1):
     model.add(Activation("linear"))
 
     start = time()
-    model.compile(loss='mse', optimizer="rmsprop")
+    model.compile(loss=loss_paper, optimizer="rmsprop")
     print("> Compilation Time : ", time() - start)
     return model
 
@@ -105,3 +109,14 @@ def plot_results(true_data, predicted_data):
     plt.plot(predicted_data, label='Prediction')
     plt.legend()
     plt.show()
+
+
+def predict_sequence_full(model, data, window_size):
+    # Shift the window by 1 new prediction each time, re-run predictions on new window
+    curr_frame = data[0]
+    predicted = []
+    for i in range(len(data)):
+        predicted.append(model.predict(curr_frame[np.newaxis, :, :])[0, 0])
+        curr_frame = curr_frame[1:]
+        curr_frame = np.insert(curr_frame, [window_size-1], predicted[-1], axis=0)
+    return predicted
