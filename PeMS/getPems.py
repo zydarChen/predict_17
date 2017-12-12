@@ -26,9 +26,10 @@ def grt_url(formatter):
         .format(formatter)
     html = requests.get(url, cookies=cook)
     save_name = 'data/SR{0[fwy]}-{0[dir]}{0[y]}{0[m]:02d}{0[d]:02d}.xlsx'.format(formatter)
-    print '开始保存' + save_name
+    # print '开始保存' + save_name
     with open(save_name, 'wb') as f:
         f.write(html.content)
+
 
 if __name__ == '__main__':
     select_dir = {'fwy': 90, 'dir': 'W', 's_time_id': 1362096000, 'y': 2013, 'm': 3, 'd': 1}

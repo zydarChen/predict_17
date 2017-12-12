@@ -1,5 +1,4 @@
-data/
-*/data/*
-.ipynb_checkpoints/
-*/.ipynb_checkpoints/*
-.idea/
+.ipynb_checkpoints
+data
+.idea
+__pycache__
