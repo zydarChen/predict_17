@@ -32,13 +32,15 @@ def fill_nan(df, data_fill_path):
     return 0
 
 
-def rw(df):
+def rw(df, display=False):
     # Random Walk
     # 十一、十二月为测试集
     expect = df['2016-11': '2016-12'].values.flatten()
     predict = df.shift(-1)['2016-11': '2016-12'].values.flatten()
     print('\nRandom Walk:')
     print_error(expect, predict)
+    if display:
+        plot_results(expect[1000:1288], predict[1000:1288])
     return 0
 
 
@@ -95,6 +97,10 @@ if __name__ == '__main__':
         print('>>> 开始缺失值填充')
         fill_nan(df, data_fill_path)
     df = pd.read_csv(data_fill_path, delimiter=';', parse_dates=True, index_col='datetime')
+    # df = df.resample('15min', closed='right', label='right').sum()
+    # df = df.resample('30min', closed='right', label='right').sum()
+    # df = df.resample('45min', closed='right', label='right').sum()
+    # df = df.resample('60min', closed='right', label='right').sum()
     print(df.head())
-    rw(df)
-    ha(df.rename(columns={'flow_5': 'flow'}), alpha1=0.15, alpha2=0.15)
+    rw(df, True)
+    # ha(df.rename(columns={'flow_5': 'flow'}), alpha1=0.15, alpha2=0.15)

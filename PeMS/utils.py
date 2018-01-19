@@ -3,6 +3,7 @@ import os
 import pandas as pd
 from tqdm import tqdm
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def excel2df(path, save_path):
@@ -29,10 +30,16 @@ def mae(y_true, y_predict):
     return np.mean(np.abs(y_true - y_predict))
 
 
-def mape(y_true, y_predict):
+def mre(y_true, y_predict):
     # Mean Relative Error
     assert len(y_true) == len(y_predict)
     return np.mean(np.abs(y_true - y_predict)/y_true) * 100
+
+
+def mape(y_true, y_predict):
+    # Mean Absolute Percentage Error
+    assert len(y_true) == len(y_predict)
+    return np.mean(np.abs(y_true - y_predict)/np.abs(y_true)) * 100
 
 
 def mse(y_true, y_predict):
@@ -52,5 +59,15 @@ def print_error(y_true, y_predict):
     print('RMSE: %.3f' % rmse(y_true, y_predict))
     print('MAE: %.3f' % mae(y_true, y_predict))
     print('MAPE: %.3f%%' % mape(y_true, y_predict))
+
+
+def plot_results(true_data, predicted_data):
+    fig = plt.figure(facecolor='white')
+    ax = fig.add_subplot(111)
+    ax.plot(true_data, label='True Data')
+    plt.plot(predicted_data, label='Prediction')
+    plt.legend()
+    # plt.savefig('../res/predict.svg', format='svg')
+    plt.show()
 
 
