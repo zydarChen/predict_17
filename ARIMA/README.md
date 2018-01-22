@@ -82,3 +82,30 @@
 - forecast()预测下一时刻/时间段
 - predict()可指定时间点/时间段预测
 - 实现多步预测
+
+## Aarshay Jain博客
+
+### [A comprehensive beginner’s guide to create a Time Series Forecast (with Codes in Python)](https://www.analyticsvidhya.com/blog/2016/02/time-series-forecasting-codes-python/)
+
+- 原文 [A comprehensive beginner’s guide to create a Time Series Forecast (with Codes in Python)](https://www.analyticsvidhya.com/blog/2016/02/time-series-forecasting-codes-python/)
+- 译文 [时间序列预测全攻略（附带Python代码）](http://www.36dsj.com/archives/44065)
+- [代码](https://github.com/aarshayj/Analytics_Vidhya/blob/master/Articles/Time_Series_Analysis/Time_Series_AirPassenger.ipynb) python2.7+
+- 大部分时间序列模型的前提是稳定，稳定的标准是：
+  - 恒定的平均数
+  - 恒定的方差
+  - 不随时间变化的自协方差
+- 稳定性测试：
+  - 绘制滚动统计曲线
+  - DF检验
+- 消除趋势
+  - 聚合：取一段时间的平均值
+  - 平滑
+    - 取滚动平均数
+      - 原始值减去滚动平均值来消除趋势
+      - 缺点：需要严格定义时段，如案例中采用年平均，而对于复杂的时序结构，平均值不容易获取
+    - 加权移动平均法
+  - 多项式回归分析：适合的回归模型
+- 消除季节性
+  - 差分：采用一个特定时间差的差值
+  - 分解：建立有关趋势和季节性的模型，从模型中删除
+
