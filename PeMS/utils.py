@@ -42,6 +42,19 @@ def mape(y_true, y_predict):
     return np.mean(np.abs(y_true - y_predict)/np.abs(y_true)) * 100
 
 
+def xgb_mape(y_predict, dtrain):
+    y_true = dtrain.get_label()
+    return 'mape', np.mean(np.abs(y_true - y_predict)/np.abs(y_true)) * 100
+
+
+def xgb_mapeobj(y_true, y_pred):
+    grad = np.sign(y_pred - y_true) / y_true
+    hess = 1/(y_true ** 2)
+    grad[(y_true == 0)] = 0
+    hess[(y_true == 0)] = 0
+    return grad, hess
+
+
 def mse(y_true, y_predict):
     # Mean Square Error
     assert len(y_true) == len(y_predict)
@@ -69,5 +82,20 @@ def plot_results(true_data, predicted_data):
     plt.legend()
     # plt.savefig('../res/predict.svg', format='svg')
     plt.show()
+
+
+def feature_vis(model, feature):
+    length = len(feature)
+    model_feature_values = model.feature_importances_
+    assert len(model_feature_values) == length
+    rank = np.argsort(-model_feature_values)  # np.argsort 从小到大的索引值
+    rank_feature = [feature[i] for i in rank]
+    plt.figure(figsize=(20, 10))
+    plt.title('Feature Importance')
+    plt.bar(range(length), model_feature_values[rank])
+    plt.xticks(range(length), rank_feature, rotation=90)
+    plt.savefig('../res/feature_vis.png', format='png')
+    # plt.show()
+
 
 
