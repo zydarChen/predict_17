@@ -109,3 +109,20 @@
   - 差分：采用一个特定时间差的差值
   - 分解：建立有关趋势和季节性的模型，从模型中删除
 
+# 调用方法
+## statsmodels.tsa.arima_model.ARIMA
+- `fit()`
+  - return: statsmodels.tsa.arima_model.ARMAResults
+
+## statsmodels.tsa.arima_model.ARMAResults
+- `fittedvalues()`，返回真实值减去残差
+- `forecast([steps, exog, alpha])`
+  - 预测的是下一个
+  - steps，预测多少步
+  - alpha=0.05，置信区间(1 - alpha) %
+  - return: [forecast, stderr, conf_int]
+  - 内部调用`_arma_predict_out_of_sample`
+- `predict([start, end, exog, typ, dynamic])`
+  - dynamic=False: True时，预测值替换真实值进行下一步预测？
+  - 输出预测效果与`forecast`相同
+  - 默认预测全部训练集

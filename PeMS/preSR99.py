@@ -34,9 +34,9 @@ def fill_nan(df, data_fill_path):
 
 def rw(df, display=False):
     # Random Walk
-    # 十一、十二月为测试集
-    expect = df['2016-11': '2016-12'].values.flatten()
-    predict = df.shift(-1)['2016-11': '2016-12'].values.flatten()
+    # 十、十一月为测试集
+    expect = df['2016-10': '2016-11'].values.flatten()
+    predict = df.shift(-1)['2016-10': '2016-11'].values.flatten()
     print('\nRandom Walk:')
     print_error(expect, predict)
     if display:
@@ -54,8 +54,8 @@ def ha(df, alpha1=0.2, alpha2=0.2):
     df = df.set_index('datetime')
 
     # Naive HA
-    expect = df['2016-11': '2016-12']['flow'].values.flatten()
-    predict_ha = df['2016-11': '2016-12']['flow@mean'].values.flatten()
+    expect = df['2016-10': '2016-11']['flow'].values.flatten()
+    predict_ha = df['2016-10': '2016-11']['flow@mean'].values.flatten()
     print('\nHistorical Average:')
     print_error(expect, predict_ha)
 
@@ -76,8 +76,8 @@ def ha(df, alpha1=0.2, alpha2=0.2):
         s[x] = alpha2 * flow[x] + (1 - alpha2) * s[x-backout]
         flow_dha[x+1] = flow[x] * s[x-backout + 1] / s[x]  # Deviation from HA
 
-    predict_exprw = df['2016-11': '2016-12']['flow@ha'].values.flatten()
-    predict_dha = df['2016-11':'2016-12']['flow@dha'].values.flatten()
+    predict_exprw = df['2016-10': '2016-11']['flow@ha'].values.flatten()
+    predict_dha = df['2016-10':'2016-11']['flow@dha'].values.flatten()
     print('\nEXPRW:')
     print_error(expect, predict_exprw)
     print('\nDHA:')
@@ -103,4 +103,4 @@ if __name__ == '__main__':
     # df = df.resample('60min', closed='right', label='right').sum()
     print(df.head())
     rw(df, True)
-    # ha(df.rename(columns={'flow_5': 'flow'}), alpha1=0.15, alpha2=0.15)
+    ha(df.rename(columns={'flow_5': 'flow'}), alpha1=0.15, alpha2=0.15)

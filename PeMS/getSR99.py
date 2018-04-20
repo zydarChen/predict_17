@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 import requests
 from PeMS.const import const
-from urllib.parse import urlencode
+from urllib import urlencode
 from pandas import date_range
 from tqdm import tqdm
 import time
@@ -27,7 +27,7 @@ def get_time_id(datetime1, datetime2):
 
 
 def get_data(dt1, dt2, station_id=1005210):
-    redirect_head = const.HEAD  # 从常量表中取出HEAD
+    redirect_head = const.DATA_HEAD  # 从常量表中取出HEAD
     url = 'http://pems.dot.ca.gov'
     dt = get_time_id(dt1, dt2)
     if dt:
@@ -39,8 +39,12 @@ def get_data(dt1, dt2, station_id=1005210):
             's_time_id_f': dt1_f,
             'e_time_id': dt2_id,
             'e_time_id_f': dt2_f,
+            'q': 'flow',
+            'q2': '',
+            'gn': '5min'
         }
         redirect = redirect_head + '&' + urlencode(redirect_dict)
+        print(redirect)
         # 提交表单
         data = {
             'redirect': redirect,

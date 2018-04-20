@@ -64,9 +64,9 @@ if __name__ == '__main__':
     scaler = StandardScaler()
     train['flow_scaler'] = scaler.fit_transform(train['flow_5'].values[:, np.newaxis])
     test['flow_scaler'] = scaler.transform(test['flow_5'].values[:, np.newaxis])
-    x_train, y_train = series2supervised(train['flow_scaler'], time_steps=time_steps, size=(1, 8))
-    x_valid, y_valid = series2supervised(train['flow_scaler'], time_steps=time_steps, size=(9, 10))
-    x_test, y_test = series2supervised(test['flow_scaler'], time_steps=time_steps, size=(11, 12))
+    x_train, y_train = series2supervised(train['flow_scaler'], time_steps=time_steps, size=(1, 7))
+    x_valid, y_valid = series2supervised(train['flow_scaler'], time_steps=time_steps, size=(8, 9))
+    x_test, y_test = series2supervised(test['flow_scaler'], time_steps=time_steps, size=(10, 11))
     # build model
     # model = build_model(timestep=x_train.shape[1], features=x_train.shape[2], loss='mae', optimizer='adam')
 
