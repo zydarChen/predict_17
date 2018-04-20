@@ -102,5 +102,5 @@ if __name__ == '__main__':
     # df = df.resample('45min', closed='right', label='right').sum()
     # df = df.resample('60min', closed='right', label='right').sum()
     print(df.head())
-    rw(df, True)
+    # rw(df, True)
     ha(df.rename(columns={'flow_5': 'flow'}), alpha1=0.15, alpha2=0.15)

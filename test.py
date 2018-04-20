@@ -55,5 +55,3 @@ import pandas as pd
 #             with open('./PeMS/data/error_new.csv', 'a') as fw1:
 #                 fw1.write(fwy + ',' + direction + ',' + station_id + '\n')
 #             print('[Error] Something is wrong with fwy=%s direction=%s station_id=%s' % (fwy, direction, station_id))
-
-

@@ -14,6 +14,7 @@ class _const:
 
 
 const = _const()
+
 const.VDS_HEAD = '/?report_form=1&dnode=Freeway&content=elv&export=xls' \
                  '&eqpo=&tag=&st_cd=on&st_ch=on&st_ff=on&st_hv=on&st_ml=on&st_fr=on&st_or=on&'
 
