@@ -29,6 +29,9 @@ const.DATA_FROM = {
     'login': 'Login',
 }
 
+const.USERNAME = 'zydarchen@outlook.com'
+const.PASSWORD = 'treep9:rQ'
+
 # 美国十大节假日
 const.VACATION = ['2016-01-01', '2016-01-18', '2016-02-15',
                   '2016-05-30', '2016-07-04', '2016-09-05',

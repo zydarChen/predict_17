@@ -55,3 +55,23 @@ import pandas as pd
 #             with open('./PeMS/data/error_new.csv', 'a') as fw1:
 #                 fw1.write(fwy + ',' + direction + ',' + station_id + '\n')
 #             print('[Error] Something is wrong with fwy=%s direction=%s station_id=%s' % (fwy, direction, station_id))
+import requests
+
+
+def login(username='zydarchen@outlook.com', password='treep9:rQ'):
+    session = requests.Session()
+    form_data = {
+        'redirect': '',
+        'username': username,
+        'password': password,
+        'login': 'Login',
+        }
+    sess = session.post('http://pems.dot.ca.gov', data=form_data)
+    for _ in range(100):
+        first = session.get('http://pems.dot.ca.gov')
+        print(first.status_code == 200)
+
+
+login()
+
+
