@@ -336,6 +336,8 @@ def get_data(start='20180420', end='20180420', station_id=1005210, q='flow', q2=
             with open(save_name, 'wb') as f:
                 f.write(html.content)
             if os.path.getsize(save_name) < 1024:  # 多一步判断，解决0K文件问题
+                print('[Error] The size less than 1K, fwy_name={fwy_name} station_id={station_id} start={start} '
+                      'end={end}'.format(**locals()))
                 return False
             return True
         else:
