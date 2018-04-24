@@ -368,7 +368,17 @@ def get_download_vds_list(path='./data/flow_data'):
 
 
 def get_vds_data(station_id, fwy_name, path='./data/flow_data', q='flow', q2='speed', gn='5min', vis=False):
-    # print(station_id, fwy_name, path, q, q2, gn)
+    """
+    下载单个检测器2016的数据
+    :param station_id:
+    :param fwy_name:
+    :param path:
+    :param q:
+    :param q2:
+    :param gn:
+    :param vis:
+    :return:
+    """
     session = login()
     print('>>> station is {station_id}, fwy_name is {fwy_name}'.format(**locals()))
     date_list = date_range('20160101', '20161231', freq='7D').tolist()
