@@ -58,20 +58,27 @@ import pandas as pd
 import requests
 
 
-def login(username='zydarchen@outlook.com', password='treep9:rQ'):
-    session = requests.Session()
-    form_data = {
-        'redirect': '',
-        'username': username,
-        'password': password,
-        'login': 'Login',
-        }
-    sess = session.post('http://pems.dot.ca.gov', data=form_data)
-    for _ in range(100):
-        first = session.get('http://pems.dot.ca.gov')
-        print(first.status_code == 200)
-
-
-login()
+# def login(username='zydarchen@outlook.com', password='treep9:rQ'):
+#     session = requests.Session()
+#     form_data = {
+#         'redirect': '',
+#         'username': username,
+#         'password': password,
+#         'login': 'Login',
+#         }
+#     sess = session.post('http://pems.dot.ca.gov', data=form_data)
+#     for _ in range(100):
+#         first = session.get('http://pems.dot.ca.gov')
+#         print(first.status_code == 200)
+#
+#
+# login()
+import os
+for parent, _, file_names in os.walk('./PeMS/data/flow_data/101-S'):
+    for file_name in file_names:
+        cur_file = os.path.join(parent, file_name)
+        if os.path.getsize(cur_file) < 1024:
+            print os.path.getsize(cur_file)
+            print cur_file
 
 

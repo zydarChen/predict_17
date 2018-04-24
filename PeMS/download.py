@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # http://pems.dot.ca.gov/?report_form=1&dnode=Freeway&content=elv&export=xls&fwy=10&dir=E&_time_id=1524089002&_time_id_f=04%2F18%2F2018&eqpo=&tag=&st_cd=on&st_ch=on&st_ff=on&st_hv=on&st_ml=on&st_fr=on&st_or=on&start_pm=.17&end_pm=239.92
 import json
+import random
 from datetime import datetime, timedelta
 import requests
 from PeMS.const import const
@@ -334,6 +335,8 @@ def get_data(start='20180420', end='20180420', station_id=1005210, q='flow', q2=
                 print('>>> 开始保存 ' + save_name)
             with open(save_name, 'wb') as f:
                 f.write(html.content)
+            if os.path.getsize(save_name) < 1024:  # 多一步判断，解决0K文件问题
+                return False
             return True
         else:
             print('[Error] Something is wrong with VPN, fwy_name={fwy_name} station_id={station_id} start={start} '
@@ -367,6 +370,7 @@ def get_download_vds_list(path='./data/flow_data'):
 def get_vds_data(station_id, fwy_name, path='./data/flow_data', q='flow', q2='speed', gn='5min', vis=False):
     # print(station_id, fwy_name, path, q, q2, gn)
     session = login()
+    print('>>> station is {station_id}, fwy_name is {fwy_name}'.format(**locals()))
     date_list = date_range('20160101', '20161231', freq='7D').tolist()
     while date_list:
         start = date_list.pop(0)
@@ -378,13 +382,14 @@ def get_vds_data(station_id, fwy_name, path='./data/flow_data', q='flow', q2='sp
         if not flag:
             date_list.append(start)
             print('Now is %s, number of date_list is %d' % (time.strftime('%H:%M:%S', time.localtime()), len(date_list)))
-            time.sleep(300)
+            time.sleep(random.randint(1, 10))
 
 
 def download_data(detector_list='./data/fwy_station_dict.json', path='./data/flow_data',
                   q='flow', q2='speed', gn='5min', vis=False):
     """
     下载全部数据
+    【已解决】BUG，返回的xlsx文件可能为0K，表示文件打开后没有写入，原因未明
     :param vis:
     :param detector_list:
     :param path:
@@ -400,7 +405,7 @@ def download_data(detector_list='./data/fwy_station_dict.json', path='./data/flo
     diff = set(detector_list).difference(get_download_vds_list(path))  # 未下载的VDS列表，[str, str, ...]
     print('>>> 待下载VDS数量为：%s' % len(diff))
     for fwy_name in tqdm(detector_dict):
-        p = Pool(10)
+        p = Pool(25)
         for station_id in detector_dict[fwy_name][1]:  # 对于每一个station_id
             if str(station_id) not in diff:
                 continue
