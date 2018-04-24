@@ -68,9 +68,8 @@ def login(username='zydarchen@outlook.com', password='treep9:rQ'):
         }
     sess = session.post('http://pems.dot.ca.gov', data=form_data)
     for _ in range(100):
-        first = session.get('http://pems.dot.ca.gov')
+        first = session.get()
         print(first.status_code == 200)
-
 
 login()
 

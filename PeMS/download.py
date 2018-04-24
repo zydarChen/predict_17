@@ -384,7 +384,7 @@ def get_vds_data(station_id, fwy_name, path='./data/flow_data', q='flow', q2='sp
 def download_data(detector_list='./data/fwy_station_dict.json', path='./data/flow_data',
                   q='flow', q2='speed', gn='5min', vis=False):
     """
-    下载全部数据
+    多进程下载全部数据
     :param vis:
     :param detector_list:
     :param path:
@@ -416,6 +416,8 @@ if __name__ == '__main__':
     # print(get_detector_info(26, 'E', 1056110))
     # merge_vds()
     # session = login()
+    # html = session.get('http://pems.dot.ca.gov')
+    # print(html.status_code)
     # get_data(start='20180413', end='20180414', station_id=1005210, q='flow', q2='speed', gn='5min',
     #          path='./data/test', fwy_name='99-N', vis=True, session=session)
     # re_download_vds()
