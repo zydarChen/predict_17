@@ -4,9 +4,11 @@
 import json
 import random
 from datetime import datetime, timedelta
+
+import re
 import requests
 from PeMS.const import const
-from urllib import urlencode
+from urllib import urlencode, unquote_plus
 import os
 from pandas import date_range, read_csv
 from tqdm import tqdm
@@ -14,6 +16,7 @@ import time
 from bs4 import BeautifulSoup
 from utils import excel2df
 from multiprocessing import Pool
+import xlrd
 # import pandas as pd
 
 
@@ -56,6 +59,20 @@ def time2time_id(time='19930101'):
         raise
     time_id = base_time_id + delta.days * 24 * 3600 + delta.seconds
     return time_id
+
+
+def time_id2time(time_id=725846400):
+    """
+    将PeMS的时间ID转成时间字符串
+    :param time_id: int
+    :return: str
+    """
+    # 19930101 00:00 = 725846400
+    base_time_id = 725846400
+    base_time = datetime(1993, 1, 1)
+    delta = timedelta(seconds=time_id - base_time_id)
+    time_new = base_time + delta
+    return datetime.strftime(time_new, '%Y%m%d')
 
 
 def get_vds(fwy=99, direction='N', time='20180419', path='./data/vds', vis=False):
@@ -444,4 +461,5 @@ if __name__ == '__main__':
     # get_download_vds_list()
     # download_data(path='./data/test', vis=True)
     download_data(detector_list='./data/fwy_station_dict_new.json')
+    # check_all()
     pass

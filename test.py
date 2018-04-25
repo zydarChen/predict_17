@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
+from zipfile import BadZipfile
+
 from PeMS.download import get_detector_info
 from tqdm import tqdm
 from collections import defaultdict
@@ -78,23 +80,66 @@ import os
 #         cur_file = os.path.join(parent, file_name)
 #         if os.path.getsize(cur_file) < 1024:
 #             print os.path.getsize(cur_file)
-#             print cur_file
+# #             print cur_file
+# for parent, _, file_names in os.walk('./PeMS/data/flow_data'):
+#     for file_name in file_names:
+#         cur_file = os.path.join(parent, file_name)
+#         # print(cur_file)
+#
+#         continue
+import xlrd
+import re
+from urllib import unquote_plus
+from datetime import datetime, timedelta
 
-# with open('./PeMS/data/freeway_name.json', 'w') as fp:
-    # json.dump(data, fp)
 
-with open('./PeMS/data/fwy_station_dict_new.json', 'r') as fp:
-    data = json.load(fp)
+def time_id2time(time_id=725846400):
+    """
+    将PeMS的时间ID转成时间字符串
+    :param time_id: int
+    :return: str
+    """
+    # 19930101 00:00 = 725846400
+    base_time_id = 725846400
+    base_time = datetime(1993, 1, 1)
+    delta = timedelta(seconds=time_id - base_time_id)
+    time_new = base_time + delta
+    return datetime.strftime(time_new, '%Y%m%d')
 
-print len(data)
-print type(data)
-lst = []
-for k, v in sorted(data.items()):
-    print k
-    lst.append('"' + k + '": ["' + v[0] + '", [' + ', '.join(map(lambda x: '"' + x + '"', v[1])) + ']]')
 
-res = '{' + ', '.join(lst) + '}'
-print res
+def check(path='.\\data\\flow_data\\87-N\\405569\\VDS405569-20160909-20160915.xlsx'):
+    """
+    检查下载的文件与内容是否对应
+    :param path:
+    :return: 没出错返回False，出错返回错误的(fwy, station_id_path, start_path, end)
+    BUG,需要匹配s_time_id，而不是s_time_id_f
+    """
+    table = xlrd.open_workbook(path).sheet_by_index(1)
+    url = table.row_values(2)[2]
+    station_id = re.search(r'station_id=(\d+)&?', url).groups()[0]
+    start = re.search(r's_time_id_f=(.{22})&?', url).groups()[0]
+    start = unquote_plus(start)[:10].replace('/', '')
+    station_id_path = path.split('\\')[-2]
+    start_path = path.split('-')[-2]
+    if station_id == station_id_path and start == start_path:
+        return []
+    fwy = path.split('\\')[-3]
+    end = path.split('-')[-1][:-5]
+    return fwy, station_id_path, start_path, end
 
-# with open('./PeMS/data/fwy_station_dict_new.json', 'w') as fp:
-#     fp.write(res)
+
+def check_all(path='.\\data\\flow_data'):
+    for parent, _, file_names in os.walk(path):
+        for file_name in file_names:
+            cur_file = os.path.join(parent, file_name)
+            try:
+                lst = check(cur_file)
+                if lst:
+                    print(lst)
+            except BadZipfile:
+                print('BadZipfile')
+            except:
+                print('[Error] Something is wrong with %s' % cur_file)
+
+
+print(check(path='.\\PeMS\\data\\flow_data\\1-N\\500010152\\VDS500010152-20160101-20160107.xlsx'))
