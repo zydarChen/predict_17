@@ -402,6 +402,7 @@ def download_data(detector_list='./data/fwy_station_dict.json', path='./data/flo
     """
     多进程下载全部数据
     【已解决】BUG，返回的xlsx文件可能为0K，表示文件打开后没有写入，原因未明
+    BUG，可能由于多进程，下载的文件名与文件内容可能不匹配，原因未明
     :param vis:
     :param detector_list:
     :param path:
@@ -416,7 +417,7 @@ def download_data(detector_list='./data/fwy_station_dict.json', path='./data/flo
     detector_list = map(str, [x for sub in detector_list for x in sub])
     diff = set(detector_list).difference(get_download_vds_list(path))  # 未下载的VDS列表，[str, str, ...]
     print('>>> 待下载VDS数量为：%s' % len(diff))
-    for fwy_name in tqdm(detector_dict):
+    for fwy_name in tqdm(sorted(detector_dict)):
         p = Pool(25)
         for station_id in detector_dict[fwy_name][1]:  # 对于每一个station_id
             if str(station_id) not in diff:
@@ -426,6 +427,7 @@ def download_data(detector_list='./data/fwy_station_dict.json', path='./data/flo
         print('>>> Waiting for %s download' % fwy_name)
         p.close()
         p.join()
+        print('>>> %s download has been completed' % fwy_name)
 
 
 if __name__ == '__main__':
@@ -441,5 +443,5 @@ if __name__ == '__main__':
     # download_data()
     # get_download_vds_list()
     # download_data(path='./data/test', vis=True)
-    download_data()
+    download_data(detector_list='./data/fwy_station_dict_new.json')
     pass

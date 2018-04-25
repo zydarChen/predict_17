@@ -73,11 +73,28 @@ import requests
 #
 # login()
 import os
-for parent, _, file_names in os.walk('./PeMS/data/flow_data/101-S'):
-    for file_name in file_names:
-        cur_file = os.path.join(parent, file_name)
-        if os.path.getsize(cur_file) < 1024:
-            print os.path.getsize(cur_file)
-            print cur_file
+# for parent, _, file_names in os.walk('./PeMS/data/flow_data/101-S'):
+#     for file_name in file_names:
+#         cur_file = os.path.join(parent, file_name)
+#         if os.path.getsize(cur_file) < 1024:
+#             print os.path.getsize(cur_file)
+#             print cur_file
 
+# with open('./PeMS/data/freeway_name.json', 'w') as fp:
+    # json.dump(data, fp)
 
+with open('./PeMS/data/fwy_station_dict_new.json', 'r') as fp:
+    data = json.load(fp)
+
+print len(data)
+print type(data)
+lst = []
+for k, v in sorted(data.items()):
+    print k
+    lst.append('"' + k + '": ["' + v[0] + '", [' + ', '.join(map(lambda x: '"' + x + '"', v[1])) + ']]')
+
+res = '{' + ', '.join(lst) + '}'
+print res
+
+# with open('./PeMS/data/fwy_station_dict_new.json', 'w') as fp:
+#     fp.write(res)
