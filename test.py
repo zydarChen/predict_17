@@ -6,7 +6,7 @@ from PeMS.download import get_detector_info
 from tqdm import tqdm
 from collections import defaultdict
 import json
-import pandas as pd
+import PeMS.download
 
 
 # data = defaultdict(list)
@@ -156,8 +156,23 @@ def check_all(path='./PeMS/data/flow_data'):
             cur_file = os.path.join(parent, file_name)
             if not check(cur_file):
                 cnt += 1
-                print(cnt)
+                with open('./PeMS/data/error_file', 'a') as fw:
+                    fw.write(cur_file + '\n')
     print(cnt)
 
 
 check_all()
+import time
+session = PeMS.download.login()
+with open('./PeMS/data/error_file', 'r') as fp:
+    for line in fp:
+        path = line.strip()
+        path_list = re.split(r'[/\\]', path)  # 同时处理Window与Linux路径
+        station_id = path_list[-2]
+        start = path_list[-1].split('-')[-2]
+        end = path_list[-1].split('-')[-1][:-5]
+        fwy = path_list[-3]
+        # print(fwy, station_id, start, end)
+        while not PeMS.download.get_data(start=start, end=end, station_id=int(station_id), fwy_name=fwy, session=session,
+                                         path='./PeMS/data/flow_data'):
+            print('Now is %s' % (time.strftime('%H:%M:%S', time.localtime())))
