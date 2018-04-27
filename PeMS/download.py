@@ -27,8 +27,13 @@ def login(username=const.USERNAME, password=const.PASSWORD):
     :param password: 密码
     :return: 登陆后的session
     """
+    proxies = {'http': 'http://127.0.0.1:1080'}
+    headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                             'Chrome/63.0.3239.132 Safari/537.36'}
     url = 'http://pems.dot.ca.gov'
     session = requests.Session()
+    session.headers = headers
+    session.proxies = proxies
     form_data = {
         'redirect': '',
         'username': username,
@@ -368,7 +373,7 @@ def get_data(start='20180420', end='20180420', station_id=1005210, q='flow', q2=
         redirect = redirect_head + '&' + urlencode(redirect_dict)
         if session:  # 使用session保存登陆状态
             download_url = url + redirect
-            html = session.get(download_url, proxies=proxies, headers=headers)
+            html = session.get(download_url)
         else:  # 直接post
             data = {
                 'redirect': redirect,
@@ -470,7 +475,7 @@ def download_data(detector_list='./data/fwy_station_dict.json', path='./data/flo
     diff = set(detector_list).difference(get_download_vds_list(path))  # 未下载的VDS列表，[str, str, ...]
     print('>>> 待下载VDS数量为：%s' % len(diff))
     for fwy_name in tqdm(sorted(detector_dict)):
-        p = Pool(25)
+        p = Pool(15)
         for station_id in detector_dict[fwy_name][1]:  # 对于每一个station_id
             if str(station_id) not in diff:
                 continue
