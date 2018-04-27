@@ -93,6 +93,23 @@ from urllib import unquote_plus
 from datetime import datetime, timedelta
 
 
+def time2time_id(time='19930101'):
+    """
+    将时间字符串转换成PeMS的时间ID
+    :param time: str
+    :return: int
+    """
+    # 19930101 00:00 = 725846400
+    base_time = datetime(1993, 1, 1)
+    base_time_id = 725846400
+    try:
+        delta = datetime.strptime(time, '%Y%m%d') - base_time
+    except ValueError:
+        raise
+    time_id = base_time_id + delta.days * 24 * 3600 + delta.seconds
+    return time_id
+
+
 def time_id2time(time_id=725846400):
     """
     将PeMS的时间ID转成时间字符串
@@ -107,39 +124,40 @@ def time_id2time(time_id=725846400):
     return datetime.strftime(time_new, '%Y%m%d')
 
 
-def check(path='.\\data\\flow_data\\87-N\\405569\\VDS405569-20160909-20160915.xlsx'):
+def check(path='./PeMS/data/flow_data/87-N/405569/VDS405569-20160909-20160915.xlsx'):
     """
     检查下载的文件与内容是否对应
-    :param path:
-    :return: 没出错返回False，出错返回错误的(fwy, station_id_path, start_path, end)
-    BUG,需要匹配s_time_id，而不是s_time_id_f
+    检查文件是否损坏
+    :param path: window下路径
+    :return: 出错返回False
     """
-    table = xlrd.open_workbook(path).sheet_by_index(1)
+    path_list = re.split(r'[/\\]', path)  # 同时处理Window与Linux路径
+    station_id = path_list[-2]
+    start = time2time_id(path_list[-1].split('-')[-2])
+    # print(fwy, station_id, start)
+    try:
+        table = xlrd.open_workbook(path).sheet_by_index(1)
+    except:
+        print('>>> Could not open %s' % path)
+        return False
     url = table.row_values(2)[2]
-    station_id = re.search(r'station_id=(\d+)&?', url).groups()[0]
-    start = re.search(r's_time_id_f=(.{22})&?', url).groups()[0]
-    start = unquote_plus(start)[:10].replace('/', '')
-    station_id_path = path.split('\\')[-2]
-    start_path = path.split('-')[-2]
-    if station_id == station_id_path and start == start_path:
-        return []
-    fwy = path.split('\\')[-3]
-    end = path.split('-')[-1][:-5]
-    return fwy, station_id_path, start_path, end
+    url_station_id = re.search(r'station_id=(\d+)&?', url).groups()[0]
+    url_start = re.search(r's_time_id=(\d+)&?', url).groups()[0]
+    if station_id != url_station_id or str(start) != url_start:
+        print('>>> download error file %s' % path)
+        return False
+    return True
 
 
-def check_all(path='.\\data\\flow_data'):
+def check_all(path='./PeMS/data/flow_data'):
+    cnt = 0
     for parent, _, file_names in os.walk(path):
         for file_name in file_names:
             cur_file = os.path.join(parent, file_name)
-            try:
-                lst = check(cur_file)
-                if lst:
-                    print(lst)
-            except BadZipfile:
-                print('BadZipfile')
-            except:
-                print('[Error] Something is wrong with %s' % cur_file)
+            if not check(cur_file):
+                cnt += 1
+                print(cnt)
+    print(cnt)
 
 
-print(check(path='.\\PeMS\\data\\flow_data\\1-N\\500010152\\VDS500010152-20160101-20160107.xlsx'))
+check_all()

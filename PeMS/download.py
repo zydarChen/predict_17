@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import re
 import requests
 from PeMS.const import const
-from urllib import urlencode, unquote_plus
+from urllib import urlencode
 import os
 from pandas import date_range, read_csv
 from tqdm import tqdm
@@ -85,6 +85,9 @@ def get_vds(fwy=99, direction='N', time='20180419', path='./data/vds', vis=False
     :param path: str, 保存路径
     :return: .xlsx, freeway上所有VDS的信息
     """
+    proxies = {'http': 'http://127.0.0.1:1080'}
+    headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                             'Chrome/63.0.3239.132 Safari/537.36'}
     url = 'http://pems.dot.ca.gov'
     redirect_head = const.VDS_HEAD  # 从常量表中取出URL_HEAD
     time_id = time2time_id(time)
@@ -98,7 +101,7 @@ def get_vds(fwy=99, direction='N', time='20180419', path='./data/vds', vis=False
     redirect = redirect_head + urlencode(redirect_dict)
     # 提交表单
     const.DATA_FROM['redirect'] = redirect
-    html = requests.post(url, data=const.DATA_FROM)
+    html = requests.post(url, data=const.DATA_FROM, proxies=proxies, headers=headers)
     if not os.path.exists(path):
         os.makedirs(path)
     save_name = path + '/{fwy}-{direction}.xlsx'.format(fwy=fwy, direction=direction)
@@ -142,6 +145,9 @@ def get_detector_info(fwy=99, direction='N', station_id=1005210):
     :param station_id:
     :return:
     """
+    proxies = {'http': 'http://127.0.0.1:1080'}
+    headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                             'Chrome/63.0.3239.132 Safari/537.36'}
     url = 'http://pems.dot.ca.gov'
     redirect_head = '/?dnode=VDS&'
     redirect_dict = {
@@ -152,7 +158,7 @@ def get_detector_info(fwy=99, direction='N', station_id=1005210):
     redirect = redirect_head + urlencode(redirect_dict)
     # 提交表单
     const.DATA_FROM['redirect'] = redirect
-    html = requests.post(url, data=const.DATA_FROM)
+    html = requests.post(url, data=const.DATA_FROM, proxies=proxies, headers=headers)
     soup = BeautifulSoup(html.content, 'html.parser')
     table = soup.find_all('table')[:2]
     fwy_info = []
@@ -285,6 +291,31 @@ def re_download_vds(detector_list='./data/detector_list.json', all_detector='./d
     return 0
 
 
+def check(path='./PeMS/data/flow_data/87-N/405569/VDS405569-20160909-20160915.xlsx'):
+    """
+    检查下载的文件与内容是否对应
+    检查文件是否损坏
+    :param path: window下路径
+    :return: 出错返回False
+    """
+    path_list = re.split(r'[/\\]', path)  # 同时处理Window与Linux路径
+    station_id = path_list[-2]
+    start = time2time_id(path_list[-1].split('-')[-2])
+    # print(fwy, station_id, start)
+    try:
+        table = xlrd.open_workbook(path).sheet_by_index(1)
+    except:
+        print('>>> Could not open %s' % path)
+        return False
+    url = table.row_values(2)[2]
+    url_station_id = re.search(r'station_id=(\d+)&?', url).groups()[0]
+    url_start = re.search(r's_time_id=(\d+)&?', url).groups()[0]
+    if station_id != url_station_id or str(start) != url_start:
+        print('>>> download error file %s' % path)
+        return False
+    return True
+
+
 def get_data(start='20180420', end='20180420', station_id=1005210, q='flow', q2='speed', gn='5min',
              path='./data/flow_data', fwy_name='99-N', vis=False, session=None):
     """
@@ -303,6 +334,9 @@ def get_data(start='20180420', end='20180420', station_id=1005210, q='flow', q2=
     :param gn: 5min|hour|day|[week|month]
     :return: 成功返回True，失败返回False
     """
+    proxies = {'http': 'http://127.0.0.1:1080'}
+    headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                             'Chrome/63.0.3239.132 Safari/537.36'}
     flag = True
     time_delta = datetime.strptime(end, '%Y%m%d') - datetime.strptime(start, '%Y%m%d')
     if time_delta.days < 0:
@@ -334,7 +368,7 @@ def get_data(start='20180420', end='20180420', station_id=1005210, q='flow', q2=
         redirect = redirect_head + '&' + urlencode(redirect_dict)
         if session:  # 使用session保存登陆状态
             download_url = url + redirect
-            html = session.get(download_url)
+            html = session.get(download_url, proxies=proxies, headers=headers)
         else:  # 直接post
             data = {
                 'redirect': redirect,
@@ -342,7 +376,7 @@ def get_data(start='20180420', end='20180420', station_id=1005210, q='flow', q2=
                 'password': 'treep9:rQ',
                 'login': 'Login',
             }
-            html = requests.post(url, data=data)
+            html = requests.post(url, data=data, proxies=proxies, headers=headers)
         if html.status_code == 200:
             save_path = path + '/' + fwy_name + '/' + str(station_id)
             if not os.path.exists(save_path):  # ./data/SR99-N/1005210文件夹是否存在
@@ -352,11 +386,11 @@ def get_data(start='20180420', end='20180420', station_id=1005210, q='flow', q2=
                 print('>>> 开始保存 ' + save_name)
             with open(save_name, 'wb') as f:
                 f.write(html.content)
-            if os.path.getsize(save_name) < 1024:  # 多一步判断，解决0K文件问题
+            if os.path.getsize(save_name) < 1024:  # 多一步判断，解决 0 K文件问题
                 print('[Error] The size less than 1K, fwy_name={fwy_name} station_id={station_id} start={start} '
                       'end={end}'.format(**locals()))
                 return False
-            return True
+            return check(save_name)
         else:
             print('[Error] Something is wrong with VPN, fwy_name={fwy_name} station_id={station_id} start={start} '
                   'end={end}'.format(**locals()))
@@ -411,7 +445,7 @@ def get_vds_data(station_id, fwy_name, path='./data/flow_data', q='flow', q2='sp
         if not flag:
             date_list.append(start)
             print('Now is %s, number of date_list is %d' % (time.strftime('%H:%M:%S', time.localtime()), len(date_list)))
-            time.sleep(random.randint(1, 10))
+            time.sleep(random.randint(10, 30))
 
 
 def download_data(detector_list='./data/fwy_station_dict.json', path='./data/flow_data',
@@ -420,6 +454,7 @@ def download_data(detector_list='./data/fwy_station_dict.json', path='./data/flo
     多进程下载全部数据
     【已解决】BUG，返回的xlsx文件可能为0K，表示文件打开后没有写入，原因未明
     BUG，可能由于多进程，下载的文件名与文件内容可能不匹配，原因未明
+    BUG,下载文件已损坏
     :param vis:
     :param detector_list:
     :param path:
