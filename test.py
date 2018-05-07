@@ -161,11 +161,11 @@ def check_all(path='./PeMS/data/flow_data'):
     print(cnt)
 
 
-check_all()
+# check_all()
 import time
 session = PeMS.download.login()
 with open('./PeMS/data/error_file', 'r') as fp:
-    for line in fp:
+    for line in tqdm(fp):
         path = line.strip()
         path_list = re.split(r'[/\\]', path)  # 同时处理Window与Linux路径
         station_id = path_list[-2]

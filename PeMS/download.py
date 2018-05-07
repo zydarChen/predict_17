@@ -500,6 +500,6 @@ if __name__ == '__main__':
     # download_data()
     # get_download_vds_list()
     # download_data(path='./data/test', vis=True)
-    download_data(detector_list='./data/fwy_station_dict_new.json')
+    download_data(detector_list='./data/fwy_station_dict_new1.json')
     # check_all()
     pass
