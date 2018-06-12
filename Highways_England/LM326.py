@@ -68,7 +68,7 @@ def train_test_split(data, train_size=0.8, valid_size=0.1, test_size=0.1):
     valid_X, valid_y = valid[:, :-1], valid[:, -1]
     test_X, test_y = test[:, :-1], test[:, -1]
 
-    # reshape [samples, time_steps, features]
+    # reshape [samples, timesteps, features]
     train_X = train_X.reshape((train_X.shape[0], 1, train_X.shape[1]))
     valid_X = valid_X.reshape((valid_X.shape[0], 1, valid_X.shape[1]))
     test_X = test_X.reshape((test_X.shape[0], 1, test_X.shape[1]))

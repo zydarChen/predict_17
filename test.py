@@ -150,21 +150,21 @@ def check(path='./PeMS/data/flow_data/87-N/405569/VDS405569-20160909-20160915.xl
 
 
 def check_all(path='./PeMS/data/flow_data'):
-    cnt = 0
     for parent, _, file_names in os.walk(path):
-        for file_name in tqdm(file_names):
+        for file_name in file_names:
             cur_file = os.path.join(parent, file_name)
-            if not check(cur_file):
-                cnt += 1
-                print(cnt)
-                # with open('./PeMS/data/error_file', 'a') as fw:
-                #     fw.write(cur_file + '\n')
-    print(cnt)
+            yield cur_file
 
-check_all()
+
+# for path in tqdm(check_all()):
+#     if not check(path):
+#         with open('./PeMS/data/error_file0507', 'a') as fw:
+#             fw.write(path + '\n')
+
+
 import time
 session = PeMS.download.login()
-with open('./PeMS/data/error_file', 'r') as fp:
+with open('./PeMS/data/error_file0507', 'r') as fp:
     for line in tqdm(fp):
         path = line.strip()
         path_list = re.split(r'[/\\]', path)  # 同时处理Window与Linux路径

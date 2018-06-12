@@ -1,6 +1,10 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python3.6
 # -*- coding: utf-8 -*-
-# http://pems.dot.ca.gov/?report_form=1&dnode=Freeway&content=elv&export=xls&fwy=10&dir=E&_time_id=1524089002&_time_id_f=04%2F18%2F2018&eqpo=&tag=&st_cd=on&st_ch=on&st_ff=on&st_hv=on&st_ml=on&st_fr=on&st_or=on&start_pm=.17&end_pm=239.92
+"""
+共510条路，其中有检测站的路有208条
+检测站总数18079，
+
+"""
 import json
 import random
 from datetime import datetime, timedelta
@@ -8,16 +12,15 @@ from datetime import datetime, timedelta
 import re
 import requests
 from PeMS.const import const
-from urllib import urlencode
+from urllib import parse
 import os
 from pandas import date_range, read_csv
 from tqdm import tqdm
 import time
 from bs4 import BeautifulSoup
-from utils import excel2df
+from PeMS.utils import excel2df
 from multiprocessing import Pool
 import xlrd
-# import pandas as pd
 
 
 def login(username=const.USERNAME, password=const.PASSWORD):
@@ -82,7 +85,7 @@ def time_id2time(time_id=725846400):
 
 def get_vds(fwy=99, direction='N', time='20180419', path='./data/vds', vis=False):
     """
-    下载VDS信息
+    下载单个VDS信息
     :param fwy: int|str, 高速路编号
     :param direction: [ESWN], 道路方向
     :param time: str, 获取时间
@@ -103,7 +106,7 @@ def get_vds(fwy=99, direction='N', time='20180419', path='./data/vds', vis=False
         '_time_id': time_id,
         '_time_id_f': time_f,
     }
-    redirect = redirect_head + urlencode(redirect_dict)
+    redirect = redirect_head + parse.urlencode(redirect_dict)
     # 提交表单
     const.DATA_FROM['redirect'] = redirect
     html = requests.post(url, data=const.DATA_FROM, proxies=proxies, headers=headers)
@@ -119,7 +122,7 @@ def get_vds(fwy=99, direction='N', time='20180419', path='./data/vds', vis=False
 
 def save_all_vds(fwy_path='./data/freeway_name.json', path='./data/vds'):
     """
-    下载全路段VDS
+    下载全路段VDS，共510条路，其中有检测站的路有208条
     :param fwy_path: freewy_name路径
     :param path: 保存路径
     :return:
@@ -160,7 +163,7 @@ def get_detector_info(fwy=99, direction='N', station_id=1005210):
         'dir': direction,
         'station_id': station_id,
     }
-    redirect = redirect_head + urlencode(redirect_dict)
+    redirect = redirect_head + parse.urlencode(redirect_dict)
     # 提交表单
     const.DATA_FROM['redirect'] = redirect
     html = requests.post(url, data=const.DATA_FROM, proxies=proxies, headers=headers)
@@ -174,7 +177,8 @@ def get_detector_info(fwy=99, direction='N', station_id=1005210):
     return fwy_info, last_log
 
 
-def merge_vds(path='./data/vds', detector_path='./data/all_detector.csv', save_path='./data/all_detector_new.csv', fwy_path='./data/freeway_name.json'):
+def merge_vds(path='./data/vds', detector_path='./data/all_detector.csv',
+              save_path='./data/all_detector_new.csv', fwy_path='./data/freeway_name.json'):
     """
     下载全部检测站信息，包括经纬度，路宽等
     :param path: freeway检测站文件路径
@@ -220,7 +224,8 @@ def merge_vds(path='./data/vds', detector_path='./data/all_detector.csv', save_p
             except:
                 # with open(path + '/re_down_new.csv', 'a') as fw1:
                 #     fw1.write(fwy + ',' + direction + ',' + station_id + '\n')
-                print('[Error] Something is wrong with fwy=%s direction=%s station_id=%s' % (fwy, direction, station_id))
+                print('[Error] Something is wrong with fwy=%s '
+                      'direction=%s station_id=%s' % (fwy, direction, station_id))
             cnt += 1
             # if cnt % 1000 == 0:
             #     print('>>> %d/18101' % cnt)
@@ -258,7 +263,8 @@ def re_merge_vds():
     return 0
 
 
-def re_download_vds(detector_list='./data/detector_list.json', all_detector='./data/all_detector.csv', exists_detector='./data/all_detector_merge_info.csv'):
+def re_download_vds(detector_list='./data/detector_list.json', all_detector='./data/all_detector.csv',
+                    exists_detector='./data/all_detector_merge_info.csv'):
     """
     由于VPN不稳定，可能部分数据没有下载，重新下载错误数据
     BUG懒得改，字段中可能存在逗号分隔符
@@ -327,6 +333,7 @@ def get_data(start='20180420', end='20180420', station_id=1005210, q='flow', q2=
     下载单个检测站在[start, end]间的数据
     如果[start, end]没有数据，将返回7k的xlsx文件，文件只包含表头
     由于VPN不稳定，将返回1K HTML文件，title 500 Internal Privoxy Error，状态码：status_code=200
+    check()判断是否能打开，是否下载正确
     :param session:
     :param vis:
     :param fwy_name:
@@ -370,7 +377,7 @@ def get_data(start='20180420', end='20180420', station_id=1005210, q='flow', q2=
             'q2': q2,
             'gn': gn
         }
-        redirect = redirect_head + '&' + urlencode(redirect_dict)
+        redirect = redirect_head + '&' + parse.urlencode(redirect_dict)
         if session:  # 使用session保存登陆状态
             download_url = url + redirect
             html = session.get(download_url)
@@ -422,6 +429,9 @@ def get_download_vds_list(path='./data/flow_data'):
             if file_size < 1024:  # 小于1K的文件为错误文件，整个vds重新下载
                 error_vds.append(tmp)
                 break
+            # if not check(cur_file):  # 出错重新下载
+            #     error_vds.append(tmp)
+            #     break
     return set(vds).difference(set(error_vds))
 
 
@@ -449,17 +459,19 @@ def get_vds_data(station_id, fwy_name, path='./data/flow_data', q='flow', q2='sp
                         q=q, q2=q2, gn=gn, vis=vis, session=session)
         if not flag:
             date_list.append(start)
-            print('Now is %s, number of date_list is %d' % (time.strftime('%H:%M:%S', time.localtime()), len(date_list)))
+            print('Now is %s, number of date_list is %d' %
+                  (time.strftime('%H:%M:%S', time.localtime()), len(date_list)))
             time.sleep(random.randint(10, 30))
 
 
 def download_data(detector_list='./data/fwy_station_dict.json', path='./data/flow_data',
-                  q='flow', q2='speed', gn='5min', vis=False):
+                  q='flow', q2='speed', gn='5min', vis=False, pool_num=15):
     """
     多进程下载全部数据
     【已解决】BUG，返回的xlsx文件可能为0K，表示文件打开后没有写入，原因未明
-    BUG，可能由于多进程，下载的文件名与文件内容可能不匹配，原因未明
-    BUG,下载文件已损坏
+    【已解决】BUG，可能由于多进程，下载的文件名与文件内容可能不匹配，原因未明
+    【已解决】BUG,下载文件已损坏
+    :param pool_num:
     :param vis:
     :param detector_list:
     :param path:
@@ -471,20 +483,33 @@ def download_data(detector_list='./data/fwy_station_dict.json', path='./data/flo
     with open(detector_list, 'r') as fp:
         detector_dict = json.load(fp)
     detector_list = [x[1] for x in detector_dict.values()]  # vds列表
-    detector_list = map(str, [x for sub in detector_list for x in sub])
-    diff = set(detector_list).difference(get_download_vds_list(path))  # 未下载的VDS列表，[str, str, ...]
+    detector_set = set(map(str, [x for sub in detector_list for x in sub]))
+    print('>>> 全部VDS数量为：%s' % len(detector_set))
+    have_down_set = get_download_vds_list(path)
+    print('>>> 已下载VDS数量为：%s' % len(have_down_set))
+    diff = detector_set.difference(have_down_set)  # 未下载的VDS列表，[str, str, ...]
     print('>>> 待下载VDS数量为：%s' % len(diff))
-    for fwy_name in tqdm(sorted(detector_dict)):
-        p = Pool(15)
-        for station_id in detector_dict[fwy_name][1]:  # 对于每一个station_id
-            if str(station_id) not in diff:
-                continue
-            p.apply_async(get_vds_data, args=(int(station_id), str(detector_dict[fwy_name][0]), path, q, q2, gn, vis))
-            # get_vds_data(station_id=int(station_id), fwy_name=detector_dict[fwy_name][0], path=path, q=q, q2=q2, gn=gn)
-        print('>>> Waiting for %s download' % fwy_name)
-        p.close()
-        p.join()
-        print('>>> %s download has been completed' % fwy_name)
+    if pool_num != 1:  # 多进程
+        for fwy_name in tqdm(sorted(detector_dict)):
+            p = Pool(pool_num)
+            for station_id in detector_dict[fwy_name][1]:  # 对于每一个station_id
+                if str(station_id) not in diff:
+                    continue
+                p.apply_async(get_vds_data, args=(int(station_id), str(detector_dict[fwy_name][0]), path, q, q2, gn, vis))
+                # get_vds_data(station_id=int(station_id),
+                #              fwy_name=detector_dict[fwy_name][0], path=path, q=q, q2=q2, gn=gn)
+            print('>>> Waiting for %s download' % fwy_name)
+            p.close()
+            p.join()
+            print('>>> %s download has been completed' % fwy_name)
+    else:  # 单进程
+        for fwy_name in tqdm(sorted(detector_dict)):
+            for station_id in detector_dict[fwy_name][1]:  # 对于每一个station_id
+                if str(station_id) not in diff:
+                    continue
+                get_vds_data(station_id=int(station_id), fwy_name=detector_dict[fwy_name][0],
+                             path=path, q=q, q2=q2, gn=gn, vis=vis)
+            print('>>> %s download has been completed' % fwy_name)
 
 
 if __name__ == '__main__':
@@ -500,6 +525,6 @@ if __name__ == '__main__':
     # download_data()
     # get_download_vds_list()
     # download_data(path='./data/test', vis=True)
-    download_data(detector_list='./data/fwy_station_dict_new1.json')
+    download_data(detector_list='./data/fwy_station_dict.json', pool_num=1)
     # check_all()
     pass
